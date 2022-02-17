@@ -1,0 +1,7 @@
+env_*/
+packages/
+runs/
+submit*
+machine*
+slurm*
+.vscode/
