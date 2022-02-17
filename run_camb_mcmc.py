@@ -8,6 +8,6 @@ cobaya.run(
     "runs/camb_mcmc/camb_mcmc",
     resume=resume,
     force=not resume,
-    test=True,
+    test=False,
     debug=False,
 )
