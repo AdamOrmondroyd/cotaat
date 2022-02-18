@@ -45,9 +45,10 @@ class FeaturePrimordialPk(Theory):
 
     def calculate(self, state, want_derived=True, **params_values_dict):
         # print("calculate!")
-        As, ns, amplitude, wavelength, centre, logwidth = [
-            params_values_dict[p] for p in self.params.keys()
-        ]
+        (
+            As,
+            ns,
+        ) = [params_values_dict[p] for p in self.params.keys()]
         ks, Pks = feature_power_spectrum(
             As,
             ns,
