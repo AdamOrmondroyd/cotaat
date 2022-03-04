@@ -3,7 +3,7 @@ This is intended to be a straight-up copy of the initial power spectrum in CAMB.
 
 This is to check that I get the same results despite "changing the plumbing".
 """
-
+import logging
 import numpy as np
 from cobaya.theory import Theory
 
@@ -44,7 +44,7 @@ class FeaturePrimordialPk(Theory):
     k_pivot = 0.05
 
     def calculate(self, state, want_derived=True, **params_values_dict):
-        # print("calculate!")
+        logging.debug("calculate!")
         (
             As,
             ns,
@@ -62,4 +62,5 @@ class FeaturePrimordialPk(Theory):
         # print(Pks)
 
     def get_primordial_scalar_pk(self):
+        logging.debug("get!")
         return self.current_state["primordial_scalar_pk"]
