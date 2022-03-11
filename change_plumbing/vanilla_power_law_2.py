@@ -9,7 +9,7 @@ from cobaya.theory import Theory
 from linf import Linf
 
 
-def vanilla_power_spectrum(
+def vanilla_2_power_spectrum(
     lnP0,
     lnP1,
     # lnP2,
@@ -45,7 +45,7 @@ def vanilla_power_spectrum(
     return ks, Pks
 
 
-class VanillaPrimordialPk(Theory):
+class Vanilla2PrimordialPk(Theory):
     """
     Theory class producing a slow-roll-like power spectrum with an enveloped,
     lineary-oscillatory feature on top.
@@ -73,7 +73,7 @@ class VanillaPrimordialPk(Theory):
             # lnk1,
             # lnk2,
         ) = [params_values_dict[p] for p in self.params.keys()]
-        ks, Pks = vanilla_power_spectrum(
+        ks, Pks = vanilla_2_power_spectrum(
             lnP0,
             lnP1,
             # lnP2,

@@ -1,5 +1,5 @@
 theory:
-  vanilla_power_law.VanillaPrimordialPk:
+  vanilla_power_law_1.Vanilla1PrimordialPk:
     python_path: "change_plumbing/"
     k_pivot: 0.05
     n_samples_wavelength: 20
@@ -143,15 +143,15 @@ params:
       loc: 3.05
       scale: 0.06
     proposal: 0.001
-  lnP1:
-    prior:
-      min: -0.55
-      max: 6.07
-    ref:
-      dist: norm
-      loc: 3.05
-      scale: 0.06
-    proposal: 0.001
+  # lnP1:
+  #   prior:
+  #     min: -0.55
+  #     max: 6.07
+  #   ref:
+  #     dist: norm
+  #     loc: 3.05
+  #     scale: 0.06
+  #   proposal: 0.001
   # lnP2:
   #   prior:
   #     min: -0.55
