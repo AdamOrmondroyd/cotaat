@@ -13,10 +13,10 @@ def linf_power_spectrum(
     N,
     lnP0,
     lnP1,
-    # lnP2,
-    # lnP3,
-    # lnk1,
-    # lnk2,
+    lnP2,
+    lnP3,
+    lnk1,
+    lnk2,
     kmin=1e-6,
     kmax=10,
     k_pivot=0.05,
@@ -36,8 +36,8 @@ def linf_power_spectrum(
     # perhaps this should be changed to a logspace sample? I think no
     Δk = min(0.0005, 1 / n_samples_wavelength)
     ks = np.arange(kmin, kmax, Δk)
-    # theta = np.array([n, lnP0, lnk1, lnP1, lnk2, lnP2, lnP3])
-    theta = np.array([N, lnP0, lnP1])
+    theta = np.array([N, lnP0, lnk1, lnP1, lnk2, lnP2, lnP3])
+    # theta = np.array([N, lnP0, lnP1])
     print(theta)
     logPk = lambda k: AdaptiveLinf(np.log(kmin / k_pivot), np.log(kmax / k_pivot))(
         np.log(k / k_pivot), theta
@@ -56,10 +56,10 @@ class LinfPrimordialPk(Theory):
         "N": None,
         "lnP0": None,
         "lnP1": None,
-        # "lnP2": None,
-        # "lnP3": None,
-        # "lnk1": None,
-        # "lnk2": None,
+        "lnP2": None,
+        "lnP3": None,
+        "lnk1": None,
+        "lnk2": None,
     }
 
     n_samples_wavelength = 20
@@ -71,19 +71,19 @@ class LinfPrimordialPk(Theory):
             N,
             lnP0,
             lnP1,
-            # lnP2,
-            # lnP3,
-            # lnk1,
-            # lnk2,
+            lnP2,
+            lnP3,
+            lnk1,
+            lnk2,
         ) = [params_values_dict[p] for p in self.params.keys()]
         ks, Pks = linf_power_spectrum(
             N,
             lnP0,
             lnP1,
-            # lnP2,
-            # lnP3,
-            # lnk1,
-            # lnk2,
+            lnP2,
+            lnP3,
+            lnk1,
+            lnk2,
             kmin=1e-6,
             kmax=10,
             k_pivot=self.k_pivot,

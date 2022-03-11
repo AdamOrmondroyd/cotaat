@@ -132,7 +132,7 @@ params:
   rdrag:
     latex: r_\mathrm{drag}
   N:
-    prior: [0, 3]
+    prior: [0, 5]
     latex: N
   lnP0:
     prior:
@@ -152,32 +152,32 @@ params:
       loc: 3.05
       scale: 0.06
     proposal: 0.001
-  # lnP2:
-  #   prior:
-  #     min: -0.55
-  #     max: 6.07
-  #   ref:
-  #     dist: norm
-  #     loc: 3.05
-  #     scale: 0.06
-  #   proposal: 0.001
-  # lnP3:
-  #   prior:
-  #     min: -0.55
-  #     max: 6.07
-  #   ref:
-  #     dist: norm
-  #     loc: 3.05
-  #     scale: 0.06
-  #   proposal: 0.001
-  # lnk1:
-  #   prior: [1e-6, 10]
-  #   latex: lnk_1
-  # lnk2:
-  #   prior: [1e-6, 10]
-  #   latex: lnk_2
-# prior:
-#   sorted_prior: "lambda lnk1, lnk2: np.log(lnk1 < lnk2)"
+  lnP2:
+    prior:
+      min: -0.55
+      max: 6.07
+    ref:
+      dist: norm
+      loc: 3.05
+      scale: 0.06
+    proposal: 0.001
+  lnP3:
+    prior:
+      min: -0.55
+      max: 6.07
+    ref:
+      dist: norm
+      loc: 3.05
+      scale: 0.06
+    proposal: 0.001
+  lnk1:
+    prior: [1e-6, 10]
+    latex: lnk_1
+  lnk2:
+    prior: [1e-6, 10]
+    latex: lnk_2
+prior:
+  sorted_prior: "lambda lnk1, lnk2: np.log(lnk1 < lnk2)"
 sampler:
   polychord:
     path: ../PolyChordLite_1.20.0
