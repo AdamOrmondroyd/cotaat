@@ -39,7 +39,7 @@ def linf_power_spectrum(
     # theta = np.array([n, lnP0, lnk1, lnP1, lnk2, lnP2, lnP3])
     theta = np.array([N, lnP0, lnP1])
     print(theta)
-    logPk = lambda k: AdaptiveLinf(np.log(kmin), np.log(kmax))(
+    logPk = lambda k: AdaptiveLinf(np.log(kmin / k_pivot), np.log(kmax / k_pivot))(
         np.log(k / k_pivot), theta
     ) - 10 * np.log(10)
     Pks = np.exp(logPk(ks))
