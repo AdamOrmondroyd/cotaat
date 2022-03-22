@@ -6,3 +6,4 @@ machine*
 slurm*
 .vscode/
 run*.py
+*.ipynb
