@@ -15,34 +15,37 @@ def linf_power_spectrum(
     lnP1,
     lnP2,
     lnP3,
-    lnk1,
-    lnk2,
-    kmin=1e-6,
-    kmax=10,
-    k_pivot=0.05,
-    n_samples_wavelength=20,
+    lgk1,
+    lgk2,
+    lgkmin=-4,
+    lgkmax=-0.3,
+    num_ks=100,
 ):
     """
     Creates the primordial scalar power spectrum as exp(linf)
 
     P(k) = As (k / k_pivot) ^ (ns - 1)
 
-    Ther characteristic Δk is determined by the number of samples per oscillation
-    n_samples_wavelength (default: 20).
+    becomes
 
-    Returns a sample of k, P(k)
+    ln(10^10 P(k)) = linf(lg(k)) to match https://arxiv.org/pdf/1908.00906.pdf
+
+    lnPi parameter is actually ln(10^10Pi)
+
+    CAMB uses a cubic spline, so isn't actually an exact linf. num_ks is the number
+    of points that the linf is sampled at, and cubic interpolated between.
     """
     # Ensure thin enough sampling at low-k
-    # perhaps this should be changed to a logspace sample? I think no
-    Δk = min(0.0005, 1 / n_samples_wavelength)
-    ks = np.arange(kmin, kmax, Δk)
-    theta = np.array([N, lnP0, lnk1, lnP1, lnk2, lnP2, lnP3])
-    # theta = np.array([N, lnP0, lnP1])
+
+    num_ks = 100
+    lgks = np.linspace(lgkmin, lgkmax, num_ks)
+    ks = 10**lgks
+
+    theta = np.array([N, lnP0, lgk1, lnP1, lgk2, lnP2, lnP3])
     print(theta)
-    logPk = lambda k: AdaptiveLinf(np.log(kmin / k_pivot), np.log(kmax / k_pivot))(
-        np.log(k / k_pivot), theta
-    ) - 10 * np.log(10)
-    Pks = np.exp(logPk(ks))
+
+    lnPk = lambda k: AdaptiveLinf(lgkmin, lgkmax)(lgks, theta)
+    Pks = np.exp(lnPk(lgks)) * 10**-10
     return ks, Pks
 
 
@@ -58,12 +61,11 @@ class LinfPrimordialPk(Theory):
         "lnP1": None,
         "lnP2": None,
         "lnP3": None,
-        "lnk1": None,
-        "lnk2": None,
+        "lgk1": None,
+        "lgk2": None,
     }
 
-    n_samples_wavelength = 20
-    k_pivot = 0.05
+    num_ks = 100
 
     def calculate(self, state, want_derived=True, **params_values_dict):
         logging.debug("calculate!")
@@ -73,8 +75,8 @@ class LinfPrimordialPk(Theory):
             lnP1,
             lnP2,
             lnP3,
-            lnk1,
-            lnk2,
+            lgk1,
+            lgk2,
         ) = [params_values_dict[p] for p in self.params.keys()]
         ks, Pks = linf_power_spectrum(
             N,
@@ -82,14 +84,16 @@ class LinfPrimordialPk(Theory):
             lnP1,
             lnP2,
             lnP3,
-            lnk1,
-            lnk2,
-            kmin=1e-6,
-            kmax=10,
-            k_pivot=self.k_pivot,
-            n_samples_wavelength=self.n_samples_wavelength,
+            lgk1,
+            lgk2,
+            num_ks=self.num_ks,
         )
-        state["primordial_scalar_pk"] = {"k": ks, "Pk": Pks, "log_regular": False}
+        state["primordial_scalar_pk"] = {
+            "kmin": ks[0],
+            "kmax": ks[-1],
+            "Pk": Pks,
+            "log_regular": True,
+        }
         # print(ks)
         # print(Pks)
 
