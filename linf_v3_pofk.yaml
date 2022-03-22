@@ -155,5 +155,6 @@ prior:
   sorted_prior: "lambda lgk1, lgk2: np.log(lgk1 < lgk2)"
 sampler:
   polychord:
+    path: ../PolyChordLite_1.20.1
     nlive: 80
     
