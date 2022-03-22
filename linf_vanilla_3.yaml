@@ -1,8 +1,7 @@
 theory:
   vanilla_power_law_3.Vanilla3PrimordialPk:
     python_path: "change_plumbing/"
-    k_pivot: 0.05
-    n_samples_wavelength: 20
+    num_ks: 100
   camb:
     external_primordial_pk: True
     extra_args:
@@ -132,54 +131,29 @@ params:
   rdrag:
     latex: r_\mathrm{drag}
   # N:
-  #   prior: [0, 3]
+  #   prior: [0, 5]
   #   latex: N
   lnP0:
-    prior:
-      min: -0.55
-      max: 6.07
-    ref:
-      dist: norm
-      loc: 3.05
-      scale: 0.06
-    proposal: 0.001
+    prior: [2, 4]
+    latex: \ln{10^{10}P_0}
   lnP1:
-    prior:
-      min: -0.55
-      max: 6.07
-    ref:
-      dist: norm
-      loc: 3.05
-      scale: 0.06
-    proposal: 0.001
-  lnP2:
-    prior:
-      min: -0.55
-      max: 6.07
-    ref:
-      dist: norm
-      loc: 3.05
-      scale: 0.06
-    proposal: 0.001
-  # lnP3:
-  #   prior:
-  #     min: -0.55
-  #     max: 6.07
-  #   ref:
-  #     dist: norm
-  #     loc: 3.05
-  #     scale: 0.06
-  #   proposal: 0.001
-  lnk1:
-    prior: [1e-6, 10]
-    latex: lnk_1
-  # lnk2:
+    prior: [2, 4]
+    latex: \ln{10^{10}P_1}
+  # lnP2:
+  #   prior: [2, 4]
+  #   latex: \ln{10^{10}P_2}
+  lnP3:
+    prior: [2, 4]
+    latex: \ln{10^{10}P_3}
+  lgk1:
+    prior: [-4, 0.3]
+    latex: \lg{k_1}
+  # lgk2:
   #   prior: [1e-6, 10]
-  #   latex: lnk_2
+  #   latex: \lg{k_2}
 # prior:
-#   sorted_prior: "lambda lnk1, lnk2: np.log(lnk1 < lnk2)"
+#   sorted_prior: "lambda lgk1, lgk2: np.log(lgk1 < lgk2)"
 sampler:
   polychord:
-    path: ../PolyChordLite_1.20.0
+    path: ../PolyChordLite_1.20.1
     nlive: 80
-    
