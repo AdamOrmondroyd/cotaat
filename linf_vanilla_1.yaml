@@ -146,10 +146,10 @@ params:
     prior: [2, 4]
     latex: \ln{10^{10}P_3}
 #   lgk1:
-#     prior: [-4, 0.3]
+#     prior: [-4, -0.3]
 #     latex: \lg{k_1}
 #   lgk2:
-#     prior: [1e-6, 10]
+#     prior: [-4, -0.3]
 #     latex: \lg{k_2}
 # prior:
 #   sorted_prior: "lambda lgk1, lgk2: np.log(lgk1 < lgk2)"
