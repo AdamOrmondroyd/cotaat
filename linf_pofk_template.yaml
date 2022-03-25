@@ -1,7 +1,4 @@
 theory:
-  linf_power_law.LinfPrimordialPk:
-    python_path: "change_plumbing/"
-    num_ks: 100
   camb:
     external_primordial_pk: True
     extra_args:

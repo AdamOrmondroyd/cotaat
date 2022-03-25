@@ -8,8 +8,24 @@ def create_pofk_yaml(
     with open(input_filepath) as in_file:
         yaml_dict = yaml.load(in_file, Loader=yaml.FullLoader)
 
+        yaml_dict["theory"]["camb"]["external_primordial_pk"] = True
+
         if adaptive:
-            yaml_dict["params"]["N"] = {"prior": [0, N + 1], "latex": "N"}
+            # TODO: remember the lower bound will need changing to 0 for w(z)
+            yaml_dict["params"]["N"] = {"prior": [1, N + 1], "latex": "N"}
+            yaml_dict["theory"]["linf_pofk.AdaptivePk"] = {
+                "python_path": "change_plumbing/",
+                "num_ks": 100,
+                "lgkmin": -4,
+                "lgkmax": -0.3,
+            }
+        else:
+            yaml_dict["theory"][f"linf_pofk.Vanilla{N}"] = {
+                "python_path": "change_plumbing/",
+                "num_ks": 100,
+                "lgkmin": -4,
+                "lgkmax": -0.3,
+            }
 
         # lnP nodes
 
