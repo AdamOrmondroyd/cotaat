@@ -3,22 +3,45 @@ import yaml
 
 
 def create_pofk_yaml(
-    input_filepath, output_filepath, N, lgkmin, lgkmax, lnPmin, lnPmax, adaptive=False
+    output_filepath,
+    Nmax,
+    lgkmin,
+    lgkmax,
+    lnPmin,
+    lnPmax,
+    adaptive=True,
+    N=None,
+    input_filepath="linf_pofk_template.yaml",
+    nlive=None,
 ):
     with open(input_filepath) as in_file:
         yaml_dict = yaml.load(in_file, Loader=yaml.FullLoader)
+
+        yaml_dict["sampler"] = {
+            "polychord": {
+                "path": "/rds-d7/user/ano23/hpc-work/PolyChordLite_1.20.1",
+            }
+        }
+        if nlive:
+            yaml_dict["sampler"]["polychord"]["nlive"] = nlive
 
         yaml_dict["theory"]["camb"]["external_primordial_pk"] = True
 
         if adaptive:
             # TODO: remember the lower bound will need changing to 0 for w(z)
-            yaml_dict["params"]["N"] = {"prior": [1, N + 1], "latex": "N"}
+            yaml_dict["params"]["N"] = {"prior": [1, Nmax + 1], "latex": "N"}
             yaml_dict["theory"]["linf_pofk.AdaptivePk"] = {
                 "python_path": "change_plumbing/",
                 "num_ks": 100,
                 "lgkmin": -4,
                 "lgkmax": -0.3,
             }
+            for i in np.arange(Nmax):
+
+                yaml_dict["params"][f"lnP{i}"] = {
+                    "prior": [lnPmin, lnPmax],
+                    "latex": f"\\ln{{P_{i}}}",  # \ is making my head explode but ignore for now
+                }
         else:
             yaml_dict["theory"][f"linf_pofk.Vanilla{N}"] = {
                 "python_path": "change_plumbing/",
@@ -26,19 +49,21 @@ def create_pofk_yaml(
                 "lgkmin": -4,
                 "lgkmax": -0.3,
             }
+            for i in np.concatenate((np.arange(N - 1), [Nmax - 1])):
+
+                yaml_dict["params"][f"lnP{i}"] = {
+                    "prior": [lnPmin, lnPmax],
+                    "latex": f"\\ln{{P_{i}}}",  # \ is making my head explode but ignore for now
+                }
 
         # lnP nodes
-
-        for i in np.arange(N):
-
-            yaml_dict["params"][f"lnP{i}"] = {
-                "prior": [lnPmin, lnPmax],
-                "latex": f"\\ln{{P_{i}}}",  # \ is making my head explode but ignore for now
-            }
 
         # lgk nodes
         # if 4 or more nodes (i.e. 2 or more internal nodes),
         # they need to be sorted
+
+        if adaptive:
+            N = Nmax
 
         if N >= 4:
             sorted_prior_arguments = ""
@@ -63,17 +88,35 @@ def create_pofk_yaml(
             sorted_prior = (
                 f"lambda {sorted_prior_arguments}: np.log({sorted_prior_expression})"
             )
-
-        print(sorted_prior)
-
-        if sorted_prior:
             yaml_dict["prior"] = {"sorted_prior": sorted_prior}
-
-        print(yaml_dict)
 
         out_file = open(output_filepath, "w")
         yaml.dump(yaml_dict, out_file)
 
 
 if __name__ == "__main__":
-    create_pofk_yaml("linf_pofk_template.yaml", "test.yaml", 5, -4, -0.3, 2, 4, True)
+    lgkmin, lgkmax = -4, -0.3
+    lnPmin, lnPmax = 2, 4
+
+    Nmax = 9
+
+    create_pofk_yaml(
+        "linf_9_adaptive.yaml",
+        Nmax,
+        lgkmin,
+        lgkmax,
+        lnPmin,
+        lnPmax,
+        adaptive=True,
+    )
+    for i in np.arange(Nmax) + 1:
+        create_pofk_yaml(
+            f"linf_9_vanilla_{i}.yaml",
+            Nmax,
+            lgkmin,
+            lgkmax,
+            lnPmin,
+            lnPmax,
+            adaptive=False,
+            N=i,
+        )

@@ -13,23 +13,6 @@ from cobaya import Theory
 from linf import AdaptiveLinf, Linf
 
 
-def vanilla_power_spectrum(theta, lgkmin, lgkmax, num_ks=100):
-
-    lgks = np.linspace(lgkmin, lgkmax, num_ks)
-    ks = 10**lgks
-    Pks = np.exp(Linf(lgkmin, lgkmax)(lgks, theta)) * 10**-10
-
-    return ks, Pks
-
-
-def adaptive_power_spectrum(theta, lgkmin, lgkmax, num_ks=100):
-    lgks = np.linspace(lgkmin, lgkmax, num_ks)
-    ks = 10**lgks
-    Pks = np.exp(AdaptiveLinf(lgkmin, lgkmax)(lgks, theta)) * 10**-10
-
-    return ks, Pks
-
-
 class LinfPk(Theory):
     """
     Abstract base class for linf P(k).
@@ -52,7 +35,7 @@ class LinfPk(Theory):
 
     def calculate(self, state, want_derived=True, **params_values_dict):
         theta = np.array([params_values_dict[p] for p in self.params.keys()])
-        ks, Pks = vanilla_power_spectrum(theta)
+        ks, Pks = self.pofk(theta)
         state["primordial_scalar_pk"] = {
             "kmin": ks[0],
             "kmax": ks[-1],
