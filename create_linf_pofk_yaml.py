@@ -17,11 +17,7 @@ def create_pofk_yaml(
     with open(input_filepath) as in_file:
         yaml_dict = yaml.load(in_file, Loader=yaml.FullLoader)
 
-        yaml_dict["sampler"] = {
-            "polychord": {
-                "path": "/rds-d7/user/ano23/hpc-work/PolyChordLite_1.20.1",
-            }
-        }
+        yaml_dict["sampler"] = {"polychord": {}}
         if nlive:
             yaml_dict["sampler"]["polychord"]["nlive"] = nlive
 
