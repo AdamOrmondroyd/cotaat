@@ -13,6 +13,11 @@ params:
     latex: H_0
     max: 100
     min: 20
+  N:
+    latex: N
+    prior:
+    - 1
+    - 10
   YHe:
     latex: Y_\mathrm{P}
   Y_p:
@@ -42,6 +47,21 @@ params:
     prior:
     - -4
     - -0.3
+  lgk5:
+    latex: \lg{k_5}
+    prior:
+    - -4
+    - -0.3
+  lgk6:
+    latex: \lg{k_6}
+    prior:
+    - -4
+    - -0.3
+  lgk7:
+    latex: \lg{k_7}
+    prior:
+    - -4
+    - -0.3
   lnP0:
     latex: \ln{P_0}
     prior:
@@ -64,6 +84,21 @@ params:
     - 4
   lnP4:
     latex: \ln{P_4}
+    prior:
+    - 2
+    - 4
+  lnP5:
+    latex: \ln{P_5}
+    prior:
+    - 2
+    - 4
+  lnP6:
+    latex: \ln{P_6}
+    prior:
+    - 2
+    - 4
+  lnP7:
+    latex: \ln{P_7}
     prior:
     - 2
     - 4
@@ -138,9 +173,11 @@ params:
   zre:
     latex: z_\mathrm{re}
 prior:
-  sorted_prior: 'lambda lgk1, lgk2, lgk3, lgk4: np.log(lgk1 < lgk2 < lgk3 < lgk4)'
+  sorted_prior: 'lambda lgk1, lgk2, lgk3, lgk4, lgk5, lgk6, lgk7: np.log(lgk1 < lgk2
+    < lgk3 < lgk4 < lgk5 < lgk6 < lgk7)'
 sampler:
-  polychord: {}
+  polychord:
+    nlive: 100
 theory:
   camb:
     external_primordial_pk: true
@@ -153,7 +190,7 @@ theory:
       theta_H0_range:
       - 20
       - 100
-  linf_pofk.Vanilla6:
+  linf_pofk.AdaptivePk:
     lgkmax: -0.3
     lgkmin: -4
     num_ks: 100

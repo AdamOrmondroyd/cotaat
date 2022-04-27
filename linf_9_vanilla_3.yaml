@@ -108,8 +108,7 @@ params:
   zre:
     latex: z_\mathrm{re}
 sampler:
-  polychord:
-    path: /rds-d7/user/ano23/hpc-work/PolyChordLite_1.20.1
+  polychord: {}
 theory:
   camb:
     external_primordial_pk: true

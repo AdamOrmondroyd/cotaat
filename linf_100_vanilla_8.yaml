@@ -42,6 +42,16 @@ params:
     prior:
     - -4
     - -0.3
+  lgk5:
+    latex: \lg{k_5}
+    prior:
+    - -4
+    - -0.3
+  lgk6:
+    latex: \lg{k_6}
+    prior:
+    - -4
+    - -0.3
   lnP0:
     latex: \ln{P_0}
     prior:
@@ -64,6 +74,16 @@ params:
     - 4
   lnP4:
     latex: \ln{P_4}
+    prior:
+    - 2
+    - 4
+  lnP5:
+    latex: \ln{P_5}
+    prior:
+    - 2
+    - 4
+  lnP6:
+    latex: \ln{P_6}
     prior:
     - 2
     - 4
@@ -138,9 +158,12 @@ params:
   zre:
     latex: z_\mathrm{re}
 prior:
-  sorted_prior: 'lambda lgk1, lgk2, lgk3, lgk4: np.log(lgk1 < lgk2 < lgk3 < lgk4)'
+  sorted_prior: 'lambda lgk1, lgk2, lgk3, lgk4, lgk5, lgk6: np.log(lgk1 < lgk2 < lgk3
+    < lgk4 < lgk5 < lgk6)'
 sampler:
-  polychord: {}
+  polychord:
+    nlive: 100
+    path: /rds-d7/user/ano23/hpc-work/PolyChordLite_1.20.1
 theory:
   camb:
     external_primordial_pk: true
@@ -153,7 +176,7 @@ theory:
       theta_H0_range:
       - 20
       - 100
-  linf_pofk.Vanilla6:
+  linf_pofk.Vanilla8:
     lgkmax: -0.3
     lgkmin: -4
     num_ks: 100

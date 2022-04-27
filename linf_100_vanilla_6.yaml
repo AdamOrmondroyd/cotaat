@@ -140,7 +140,9 @@ params:
 prior:
   sorted_prior: 'lambda lgk1, lgk2, lgk3, lgk4: np.log(lgk1 < lgk2 < lgk3 < lgk4)'
 sampler:
-  polychord: {}
+  polychord:
+    nlive: 100
+    path: /rds-d7/user/ano23/hpc-work/PolyChordLite_1.20.1
 theory:
   camb:
     external_primordial_pk: true
