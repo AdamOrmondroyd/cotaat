@@ -123,7 +123,10 @@ for N in np.arange(9) + 1:
     adaptive_logZs.append(adaptive_splits[N - 1].logZ())
 
 # %%
-for i, adaptive_split in enumerate(adaptive_splits):
+for i, adaptive_split in enumerate(adaptive_splits[1:]):
+    print(
+        f"effective sample size: {adaptive_split.weight.sum() ** 2 / (adaptive_split.weight**2).sum()}"
+    )
     # print(adaptive_split[adaptive_params])
     print(adaptive_split.weight)
     print(len(adaptive_split))
