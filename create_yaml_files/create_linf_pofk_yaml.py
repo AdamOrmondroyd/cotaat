@@ -81,9 +81,15 @@ def create_pofk_yaml(
                 sorted_prior_expression += f"lgk{i}"
 
         if N >= 4:
-            sorted_prior = (
-                f"lambda {sorted_prior_arguments}: np.log({sorted_prior_expression})"
-            )
+            if adaptive:
+                sorted_prior = (
+                    f"lambda N, {sorted_prior_arguments}: np.log(np.all(np.diff(np.array([{sorted_prior_arguments}])[:max(int(N) - 2, 0)]) > 0 ))"
+                )
+            else:
+                sorted_prior = (
+                    f"lambda {sorted_prior_arguments}: np.log({sorted_prior_expression})"
+                )
+
             yaml_dict["prior"] = {"sorted_prior": sorted_prior}
 
         out_file = open(output_filepath, "w")
