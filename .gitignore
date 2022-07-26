@@ -8,3 +8,7 @@ slurm*
 run*.py
 *.ipynb
 *.sh
+*.jpg
+*.eps
+*.pyc
+*.yaml
