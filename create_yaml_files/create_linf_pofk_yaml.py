@@ -83,7 +83,7 @@ def create_pofk_yaml(
         if N >= 4:
             if adaptive:
                 sorted_prior = (
-                    f"lambda N, {sorted_prior_arguments}: np.log(np.all(np.diff(np.array([{sorted_prior_arguments}])[:max(int(N) - 2, 0)]) > 0 ))"
+                    f"lambda N, {sorted_prior_arguments}: np.log(np.all(np.diff(np.array([{sorted_prior_arguments}])[:max(int(N) - 2, 0)]) > 0))"
                 )
             else:
                 sorted_prior = (
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     Nmax = 9
 
     create_pofk_yaml(
-        "linf_9_adaptive.yaml",
+        "../linf_9_adaptive.yaml",
         Nmax,
         lgkmin,
         lgkmax,
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     )
     for i in np.arange(Nmax) + 1:
         create_pofk_yaml(
-            f"linf_9_vanilla_{i}.yaml",
+            f"../linf_9_vanilla_{i}.yaml",
             Nmax,
             lgkmin,
             lgkmax,
