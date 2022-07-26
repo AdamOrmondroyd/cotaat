@@ -19,7 +19,7 @@ class LinfPk(Theory):
 
     Requires additional class attribute params, which needs to be
     ordered in the correct structure for a linf, and definition of
-    self.linf needs to be added to
+    self.linf needs to be added to the constructor.
     """
 
     num_ks = 100
