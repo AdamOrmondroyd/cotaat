@@ -1,7 +1,11 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
+import anesthetic
+from fgivenx import plot_contours
 import change_plumbing.linf_pofk as linf_pofk
 from linf import AdaptiveLinf, Linf
+
+root = lambda name: f"runs/{name}/{name}_polychord_raw/{name}"
 
 vanilla_paramss = [
     linf_pofk.Vanilla1.params.keys(),
@@ -19,6 +23,8 @@ adaptive_params = linf_pofk.AdaptivePk.params.keys()
 
 lgk_min = -4
 lgk_max = -0.3
+
+ax_set_kwargs = {"xlabel": "$k$", "ylabel": r"$\ln 10^{10} P$", "xscale": "log", "ylim": (1.9, 4.1)}
 
 
 def pofk_vanilla_linf(k, theta):
@@ -41,3 +47,30 @@ def get_logZ(name):
             if len(words) > 0:
                 if "log(Z)" == words[0]:
                     return float(words[2]), float(words[4])
+
+def plot_pofk(name, resolution=100, colors="Reds_r", title=None):
+    _samples = anesthetic.NestedSamples(root=root(name))
+    fig, ax = plt.subplots()
+
+    ks = np.logspace(lgk_min, lgk_max, resolution)
+    
+    if "adaptive" in name:
+        _params = adaptive_params
+    else:
+        _params = vanilla_paramss[int(name[int(name.find("vanilla")) + len("vanilla_")]) - 1]
+        
+    _linf = pofk_adaptive_linf if "N" in _params else pofk_vanilla_linf
+    
+    print(_samples[_params])
+    cbar = plot_contours(
+        _linf,
+        ks,
+        _samples[_params],
+        weights=_samples.weights,
+        ax=ax,
+        colors=colors,
+    )
+    cbar = fig.colorbar(cbar, ticks=[0, 1, 2, 3], ax=ax, location="right", label=name if title is None else title)
+    cbar.set_ticklabels(["", r"$1\sigma$", r"$2\sigma$", r"$3\sigma$"], fontsize="large")
+    ax.set(**ax_set_kwargs)
+    return fig, ax
