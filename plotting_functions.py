@@ -70,7 +70,7 @@ def plot_pofk(name, resolution=100, colors="Reds_r", title=None):
         ax=ax,
         colors=colors,
     )
-    cbar = fig.colorbar(cbar, ticks=[0, 1, 2, 3], ax=ax, location="right", label=name if title is None else title)
+    cbar = fig.colorbar(cbar, ticks=[0, 1, 2, 3], ax=ax, location="right")
     cbar.set_ticklabels(["", r"$1\sigma$", r"$2\sigma$", r"$3\sigma$"], fontsize="large")
-    ax.set(**ax_set_kwargs)
+    ax.set(**ax_set_kwargs, title=title if title else name)
     return fig, ax
